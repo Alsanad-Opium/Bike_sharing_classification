@@ -1,1 +1,10 @@
-# Bike_sharing_classification
+##  User Retention Prediction
+
+**Challenge:** Predict whether a mobile app user will return, using 8 aggregated behavioral features (session activity, purchase behavior, recency). Evaluated on ROC-AUC, with 0.60 as the qualification threshold and 0.75 considered a good solution.
+
+**Methodology:**
+Started with baseline models (logistic regression, random forest) per the brief's guidance, validated with proper 5-fold cross-validation after finding single train/test splits gave inconsistent, noisy results. Investigated individual feature strength via standalone AUC scores — `avg_session_time`, `avg_purchase_value`, and `session_std` carried the most signal; `is_weekend_user` was near-negligible. Tested several engineered ratio features (purchase rate, activity ratio); these proved redundant with existing columns rather than genuinely new information, so were dropped. Compared three model families — Random Forest, Gradient Boosting, and XGBoost — all converging to a similar ~0.65-0.67 AUC range, indicating the limiting factor was feature information rather than model choice or tuning. Final model averages predictions from all three, trained on the full dataset.
+
+**Result:** Cross-validated ensemble AUC of **0.661 (± 0.015)** — comfortably above the 0.60 qualification bar, reflecting a well-validated ceiling given the available features. Submission includes predicted probabilities (not binary labels), consistent with the ROC-AUC scoring formula, which requires continuous scores to be meaningful.
+
+**Key challenge:** With only 8 aggregated features and no raw event-level or demographic data, further gains were constrained by information availability rather than modeling technique — confirmed by three architecturally different models independently reaching the same performance ceiling.
